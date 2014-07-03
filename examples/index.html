@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="angularFamousExample">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Angular-Famous Example App</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div ng-controller="TestController">
+  <div class="outer" style="margin-top: 100px; margin-left: 100px; height: 400px; width: 400px; border: 1px solid black">
+    <div af-context class="context">
+      <div af-modifier class="modifier" af-origin-x="0.5" af-origin-y="0">
+        <div my-position-updater af-modifier class="position-modifier">
+          <div af-surface class="surface" af-size-x="200" af-size-y="true" af-background="red">
+            <div>Static text</div>
+            <div>Dynamic text {{text}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script data-main="main" src="../bower_components/requirejs/require.js"></script>
+</body>
+</html>
