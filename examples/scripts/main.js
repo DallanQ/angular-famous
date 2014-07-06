@@ -5,12 +5,17 @@ require.config({
   paths: {
     angular: '../bower_components/angular/angular',
     angularMocks: '../bower_components/angular-mocks/angular-mocks',
+    'ui.router': '../bower_components/angular-ui-router/release/angular-ui-router',
     text: '../bower_components/requirejs-text/text',
-    famous: '../bower_components/famous'
+    famous: '../bower_components/famous',
+    examples: '../examples/scripts'
   },
   shim: {
     'angular' : {
-      'exports' : 'angular'
+      'exports': 'angular'
+    },
+    'ui.router': {
+      deps: ['angular']
     },
     'angularMocks': {
       deps:['angular'],
@@ -27,7 +32,7 @@ window.name = 'NG_DEFER_BOOTSTRAP!';
 
 require( [
   'angular',
-  'app.js'
+  'examples/app'
 ], function(angular, app) {
   angular.element().ready(function() {
     angular.resumeBootstrap([app['name']]);

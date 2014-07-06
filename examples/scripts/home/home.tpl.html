@@ -1,0 +1,5 @@
+<div af-modifier af-translate-y="{{$index * 100}}" af-size-y="100" ng-repeat="menuItem in menuItems">
+  <div af-surface af-size-y="100" af-background="yellow" style="line-height:100px; text-align: center; border: 1px solid #333">
+    <a ng-href="{{menuItem.url}}">{{menuItem.label}}</a>
+  </div>
+</div>

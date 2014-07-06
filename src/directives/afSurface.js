@@ -7,40 +7,91 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
         restrict: 'EA',
         priority: 1,
         scope: true,
-        controller: function($scope, $element, $attrs) {
-          console.log('surface controller scope', $scope);
-
-          // add a surface to the scope
-          $scope.afSurface = new FamousCoreSurface({
-            // TODO parse the rest of the attributes
-            size: [
-              afUtils.parseAttr($attrs['afSizeX']),
-              afUtils.parseAttr($attrs['afSizeY'])
-            ],
-            properties: afUtils.removeEmptyProperties({
-              background: $attrs['afBackground']
-            })
-          });
-          $scope.afRenderNode = new FamousCoreRenderNode().add($scope.afSurface);
-
-          // TODO watch for changes in size and properties
+        controller: function($scope) {
+          // add an afNode for the surface to the scope
+          $scope.afNode = {};
+          $scope.afNode.surface = new FamousCoreSurface();
+          $scope.afNode.renderNode = new FamousCoreRenderNode().add($scope.afNode.surface);
 
           // clean up
           $scope.$on('$destroy', function () {
             // TODO not sure how to remove a surface from its parent
-            $scope.afSurface.setContent('');
-            $scope.$parent.$emit('afRemove', {surface: $scope.afSurface, renderNode: $scope.afRenderNode});
+            $scope.afNode.surface.setContent('');
+            $scope.$parent.$emit('afRemove', $scope.afNode);
           });
         },
-        link: function(scope, element) {
-          console.log('surface link scope', scope);
+        compile: function(element, attrs) {
+          // TODO add other properties
+          var properties = [
+            {
+              attrs: ['afSizeX', 'afSizeY'],
+              getter: function(attrs) {
+                return function() {
+                  return [afUtils.parseAttr(attrs.afSizeX), afUtils.parseAttr(attrs.afSizeY)];
+                };
+              },
+              setter: function(value) {
+                var curr = this.getSize();
+                if (curr == null || value[0] !== curr[0] || value[1] !== curr[1]) {
+                  this.setSize(value);
+                }
+              }
+            },
+            {
+              attrs: ['afBackground'],
+              getter: function(attrs) {
+                return function() {
+                  return afUtils.removeEmptyProperties({
+                    background: afUtils.parseAttr(attrs.afBackground)
+                  });
+                };
+              },
+              setter: function(value) {
+                var curr = this.getProperties();
+                if (curr == null || value['background'] !== curr['background']) {
+                  this.setProperties(value);
+                }
+              }
+            }
+          ];
 
-          // set this element as the surface content
-          // TODO does this work even if we have an ng-repeat on the surface?
-          scope.afSurface.setContent(element[0]);
+          // remember which attributes have been interpolated
+          var interpolatedAttrs = afUtils.getInterpolatedAttrs(attrs);
 
-          // add to render tree after all normal-priority controller & link functions on this scope have executed
-          scope.$parent.$emit('afAdd', {surface: scope.afSurface, renderNode: scope.afRenderNode});
+          function setProperty(target, attrs, property) {
+            if (afUtils.hasSomeProperty(attrs, property.attrs)) {
+              var getter = property.getter(attrs);
+              var updateFn = function() {
+                property.setter.call(target, getter());
+              };
+              updateFn();
+              // observe interpolated attrs
+              for (var i = 0, len = property.attrs.length; i < len; i++) {
+                if (interpolatedAttrs[property.attrs[i]]) {
+                  attrs.$observe(property.attrs[i], updateFn);
+                }
+              }
+            }
+          }
+
+          return function(scope, element, attrs) {
+            // set this element as the surface content
+            scope.afNode.surface.setContent(element[0]);
+
+            // set properties
+            for (var i = 0, len = properties.length; i < len; i++) {
+              setProperty(scope.afNode.surface, attrs, properties[i]);
+            }
+
+            // set label
+            scope.afNode.label = attrs.afSurface;
+            attrs.$observe('afSurface', function(value) {
+              scope.afNode.label = value;
+            });
+
+            // add to render tree after all normal-priority controller & link functions on this scope have executed
+            scope.$parent.$emit('afAdd', scope.afNode);
+          };
         }
       };
     });

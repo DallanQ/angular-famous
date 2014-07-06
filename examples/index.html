@@ -6,24 +6,20 @@
   <title>Angular-Famous Example App</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../bower_components/famous/core/famous.css" />
+  <link rel="stylesheet" type="text/css" href="styles/main.css" />
 </head>
 <body>
-
-<div ng-controller="TestController">
-  <div class="outer" style="margin-top: 100px; margin-left: 100px; height: 400px; width: 400px; border: 1px solid black">
-    <div af-context class="context">
-      <div af-modifier class="modifier" af-origin-x="0.5" af-origin-y="0">
-        <div my-position-updater af-modifier class="position-modifier">
-          <div af-surface class="surface" af-size-x="200" af-size-y="true" af-background="red">
-            <div>Static text</div>
-            <div>Dynamic text {{text}}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- TODO:  if window width is less than 385px, don't show the iphone (use media queries) -->
+<div style="position: relative; width: 385px; margin: 0 auto;">
+  <img class="phone-frame" style="" src="images/iphone-5s-white-frame.png" />
+  <div class="phone-view-container" af-context ui-view></div>
 </div>
 
-<script data-main="main" src="../bower_components/requirejs/require.js"></script>
+<!--[if lt IE 9]>
+<script src="../bower_components/es5-shim/es5-shim.js"></script>
+<script src="../bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
+<script data-main="scripts/main" src="../bower_components/requirejs/require.js"></script>
 </body>
 </html>
