@@ -19,19 +19,18 @@ define([
     })
 
     .controller('FlipperController', function($scope, FamousCoreEventHandler) {
+      var flipper;
+
       $scope.$on('afAdded', function(event, child) {
         event.stopPropagation();
         if (!!child.view) {
-          // flip on click
-          var eventHandler = new FamousCoreEventHandler();
-          child.view.frontNode.get().pipe(eventHandler);
-          child.view.backNode.get().pipe(eventHandler);
-          eventHandler.on('click', function() {
-            child.view.flip();
-          });
+          flipper = child.view;
         }
       });
 
-    });
+      $scope.flip = function() {
+        flipper.flip();
+      };
 
+    });
 });

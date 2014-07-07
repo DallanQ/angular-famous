@@ -1,5 +1,6 @@
 define([
   'angular',
+  'directives/afClick',
   'directives/afContext',
   'directives/afModifier',
   'directives/afSurface',
@@ -8,6 +9,7 @@ define([
   'famousModule'
 ], function (angular) {
   return angular.module('angularFamous', [
+    'angularFamous.afClick',
     'angularFamous.afContext',
     'angularFamous.afModifier',
     'angularFamous.afSurface',
