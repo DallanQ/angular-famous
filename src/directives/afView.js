@@ -24,18 +24,18 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
         }
         else if (viewType === 'FlexibleLayout') {
           var flexibleLayout = new FamousViewsFlexibleLayout();
-          var sequence = [];
+          var renderNodes = [];
           viewInfo = {
             view: flexibleLayout,
             add: function(child) {
-              sequence.push(child.renderNode);
-              flexibleLayout.sequenceFrom(sequence);
+              renderNodes.push(child.renderNode);
+              flexibleLayout.sequenceFrom(renderNodes);
             },
             remove: function(child) {
-              var pos = sequence.indexOf(child.renderNode);
+              var pos = renderNodes.indexOf(child.renderNode);
               if (pos >= 0) {
-                sequence.splice(pos, 1);
-                flexibleLayout.sequenceFrom(sequence);
+                renderNodes.splice(pos, 1);
+                flexibleLayout.sequenceFrom(renderNodes);
               }
             }
           };
@@ -61,7 +61,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
 
         // set defaults
         if (!viewInfo.renderNode) {
-          viewInfo.renderNode = new FamousCoreRenderNode().add(viewInfo.view);
+          viewInfo.renderNode = new FamousCoreRenderNode(viewInfo.view);
         }
 
         return viewInfo;

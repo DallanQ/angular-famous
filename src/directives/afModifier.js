@@ -12,7 +12,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
           // add an afNode for the modifier to the scope
           $scope.afNode = {};
           $scope.afNode.modifier = new FamousCoreModifier();
-          $scope.afNode.renderNode = new FamousCoreRenderNode().add($scope.afNode.modifier);
+          $scope.afNode.renderNode = new FamousCoreRenderNode($scope.afNode.modifier);
 
           // add and remove children
           $scope.$on('afAdd', function(event, child) {

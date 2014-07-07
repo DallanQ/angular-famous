@@ -11,7 +11,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
           // add an afNode for the surface to the scope
           $scope.afNode = {};
           $scope.afNode.surface = new FamousCoreSurface();
-          $scope.afNode.renderNode = new FamousCoreRenderNode().add($scope.afNode.surface);
+          $scope.afNode.renderNode = new FamousCoreRenderNode($scope.afNode.surface);
 
           // clean up
           $scope.$on('$destroy', function () {

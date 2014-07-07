@@ -17,8 +17,10 @@ body {
   left: 34px;
   top: 121px;
   width: 320px;
-  height: 568px; /* added */
   z-index: 2;
+  /* added */
+  height: 568px;
+  overflow: hidden;
 }
 
 @media (max-width: 385px) and (max-height: 806px){
