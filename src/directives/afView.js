@@ -3,22 +3,22 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
 
   return angular.module('angularFamous.afView', ['famous', 'angularFamous.afUtils'])
     .directive('afView', function(FamousCoreRenderNode, afUtils,
-                                  FamousViewsFlipper, FamousViewsFlexibleLayout) {
-      function getViewInfo(viewType, attrs) {
+                                  FamousViewsFlipper, FamousViewsFlexibleLayout, FamousViewsHeaderFooterLayout) {
+      function getViewInfo(viewType) {
         var viewInfo;
+        var numChildren = 0;
         if (viewType === 'Flipper') {
           var flipper = new FamousViewsFlipper();
           viewInfo = {
             view: flipper,
             add: function(child) {
-              if (child.label === attrs.afFront) {
-                console.log('add front', child);
+              if (numChildren === 0) {
                 flipper.setFront(child.renderNode);
               }
-              else if (child.label === attrs.afBack) {
-                console.log('add back', child);
+              else if (numChildren === 1) {
                 flipper.setBack(child.renderNode);
               }
+              numChildren++;
             }
           };
         }
@@ -40,6 +40,24 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             }
           };
         }
+        else if (viewType === 'HeaderFooterLayout') {
+          var headerFooterLayout = new FamousViewsHeaderFooterLayout();
+          viewInfo = {
+            view: headerFooterLayout,
+            add: function(child) {
+              if (numChildren === 0) {
+                headerFooterLayout.header.add(child.renderNode);
+              }
+              else if (numChildren === 1) {
+                headerFooterLayout.content.add(child.renderNode);
+              }
+              else if (numChildren === 2) {
+                headerFooterLayout.footer.add(child.renderNode);
+              }
+              numChildren++;
+            }
+          };
+        }
 
         // set defaults
         if (!viewInfo.renderNode) {
@@ -56,7 +74,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
         scope: true,
         controller: function($scope, $element, $attrs) {
           // add an afNode for the view to the scope
-          var viewInfo = getViewInfo($attrs.afViewType, $attrs);
+          var viewInfo = getViewInfo($attrs.afViewType);
           $scope.afNode = {};
           $scope.afNode.view = viewInfo.view;
           $scope.afNode.renderNode = viewInfo.renderNode;
@@ -69,7 +87,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
           });
           $scope.$on('afRemove', function(event, child) {
             event.stopPropagation();
-            // TODO doesn't appear to be a way to remove children from views
+            // TODO doesn't appear to be a way to remove children from most views
             if (viewInfo.remove) {
               viewInfo.remove(child);
             }
@@ -91,27 +109,35 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
               {
                 attrs: ['afDirection'],
                 getter: function(attrs) {
-                  return function() {
-                    return {
-                      direction: afUtils.parseAttr(attrs.afDirection)
-                    };
+                  return {
+                    direction: afUtils.parseAttr(attrs.afDirection)
                   };
                 },
                 setter: function(value) {
-                  console.log('options', value);
                   this.setOptions(value);
                 }
               },
               {
                 attrs: ['afRatios'],
                 getter: function(attrs) {
-                  return function() {
-                    return JSON.parse(afUtils.parseAttr(attrs.afRatios));
+                  return JSON.parse(afUtils.parseAttr(attrs.afRatios));
+                },
+                setter: function(value) {
+                  this.setRatios(value);
+                }
+              }
+            ],
+            HeaderFooterLayout: [
+              {
+                attrs: ['afHeaderSize', 'afFooterSize'],
+                getter: function(attrs) {
+                  return {
+                    headerSize: afUtils.parseAttr(attrs.afHeaderSize),
+                    footerSize: afUtils.parseAttr(attrs.afFooterSize)
                   };
                 },
                 setter: function(value) {
-                  console.log('ratios', value);
-                  this.setRatios(value);
+                  this.setOptions(value);
                 }
               }
             ]

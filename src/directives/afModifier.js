@@ -36,6 +36,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
         },
         compile: function(element, attrs) {
           // TODO add opacity, align, other transforms?
+          // getters return functions that return the value
           var properties = [
             {
               attrs: ['afOriginX', 'afOriginY'],

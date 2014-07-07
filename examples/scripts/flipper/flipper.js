@@ -21,7 +21,7 @@ define([
     .controller('FlipperController', function($scope, FamousCoreEventHandler) {
       $scope.$on('afAdded', function(event, child) {
         event.stopPropagation();
-        if (child.label === 'flipper') {
+        if (!!child.view) {
           // flip on click
           var eventHandler = new FamousCoreEventHandler();
           child.view.frontNode.get().pipe(eventHandler);

@@ -22,6 +22,7 @@ define([
     $scope.menuItems = [
       { url: '#/flipper', label: 'Flipper'},
       { url: '#/flexible-layout', label: 'Flexible Layout'},
+      { url: '#/header-footer-layout', label: 'Header Footer Layout'},
       { url: '#/moveable', label: 'Moveable'}
     ];
 

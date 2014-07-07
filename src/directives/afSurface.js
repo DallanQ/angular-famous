@@ -26,9 +26,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             {
               attrs: ['afSizeX', 'afSizeY'],
               getter: function(attrs) {
-                return function() {
-                  return [afUtils.parseAttr(attrs.afSizeX), afUtils.parseAttr(attrs.afSizeY)];
-                };
+                return [afUtils.parseAttr(attrs.afSizeX), afUtils.parseAttr(attrs.afSizeY)];
               },
               setter: function(value) {
                 var curr = this.getSize();
@@ -40,11 +38,9 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             {
               attrs: ['afBackground'],
               getter: function(attrs) {
-                return function() {
-                  return afUtils.removeEmptyProperties({
-                    background: afUtils.parseAttr(attrs.afBackground)
-                  });
-                };
+                return afUtils.removeEmptyProperties({
+                  background: afUtils.parseAttr(attrs.afBackground)
+                });
               },
               setter: function(value) {
                 var curr = this.getProperties();

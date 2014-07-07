@@ -51,9 +51,8 @@ define(['angular'], function(angular) {
 
       function setAndObserveProperty(target, attrs, interpolatedAttrs, property) {
         if (hasSomeProperty(attrs, property.attrs)) {
-          var getter = property.getter(attrs);
           var updateFn = function () {
-            property.setter.call(target, getter());
+            property.setter.call(target, property.getter(attrs));
           };
           updateFn();
           // observe interpolated attrs
