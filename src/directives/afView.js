@@ -3,56 +3,73 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
 
   return angular.module('angularFamous.afView', ['famous', 'angularFamous.afUtils'])
     .directive('afView', function(FamousCoreRenderNode, afUtils,
-                                  FamousViewsFlipper, FamousViewsFlexibleLayout, FamousViewsHeaderFooterLayout) {
+                                  FamousViewsFlipper, FamousViewsFlexibleLayout, FamousViewsScrollview,
+                                  FamousViewsHeaderFooterLayout) {
       function getViewInfo(viewType) {
         var viewInfo;
-        var numChildren = 0;
+        var view;
+        var numChildren;
+        var renderNodes;
         if (viewType === 'Flipper') {
-          var flipper = new FamousViewsFlipper();
+          view = new FamousViewsFlipper();
+          numChildren = 0;
           viewInfo = {
-            view: flipper,
             add: function(child) {
               if (numChildren === 0) {
-                flipper.setFront(child.renderNode);
+                view.setFront(child.renderNode);
               }
               else if (numChildren === 1) {
-                flipper.setBack(child.renderNode);
+                view.setBack(child.renderNode);
               }
               numChildren++;
             }
           };
         }
         else if (viewType === 'FlexibleLayout') {
-          var flexibleLayout = new FamousViewsFlexibleLayout();
-          var renderNodes = [];
+          view = new FamousViewsFlexibleLayout();
+          renderNodes = [];
+          view.sequenceFrom(renderNodes);
           viewInfo = {
-            view: flexibleLayout,
             add: function(child) {
               renderNodes.push(child.renderNode);
-              flexibleLayout.sequenceFrom(renderNodes);
             },
             remove: function(child) {
               var pos = renderNodes.indexOf(child.renderNode);
               if (pos >= 0) {
                 renderNodes.splice(pos, 1);
-                flexibleLayout.sequenceFrom(renderNodes);
+              }
+            }
+          };
+        }
+        else if (viewType === 'Scrollview') {
+          view = new FamousViewsScrollview();
+          renderNodes = [];
+          view.sequenceFrom(renderNodes);
+          viewInfo = {
+            add: function(child) {
+              renderNodes.push(child.renderNode);
+            },
+            remove: function(child) {
+              var pos = renderNodes.indexOf(child.renderNode);
+              if (pos >= 0) {
+                renderNodes.splice(pos, 1);
               }
             }
           };
         }
         else if (viewType === 'HeaderFooterLayout') {
-          var headerFooterLayout = new FamousViewsHeaderFooterLayout();
+          view = new FamousViewsHeaderFooterLayout();
+          numChildren = 0;
           viewInfo = {
-            view: headerFooterLayout,
             add: function(child) {
               if (numChildren === 0) {
-                headerFooterLayout.header.add(child.renderNode);
+                view.header.add(child.renderNode);
               }
               else if (numChildren === 1) {
-                headerFooterLayout.content.add(child.renderNode);
+                view.content.add(child.renderNode);
               }
               else if (numChildren === 2) {
-                headerFooterLayout.footer.add(child.renderNode);
+                view.footer.add(child.renderNode);
               }
               numChildren++;
             }
@@ -60,6 +77,9 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
         }
 
         // set defaults
+        if (!viewInfo.view) {
+          viewInfo.view = view;
+        }
         if (!viewInfo.renderNode) {
           viewInfo.renderNode = new FamousCoreRenderNode(viewInfo.view);
         }

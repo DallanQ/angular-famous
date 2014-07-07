@@ -19,11 +19,12 @@ define([
 
     .controller('HomeController', function($scope) {
       $scope.menuItems = [
-        { url: '#/flipper', label: 'Flipper'},
+        { url: '#/demo', label: 'Demo'},
         { url: '#/flexible-layout', label: 'Flexible Layout'},
+        { url: '#/flipper', label: 'Flipper'},
         { url: '#/header-footer-layout', label: 'Header Footer Layout'},
-        { url: '#/moveable', label: 'Moveable'},
-        { url: '#/render-node', label: 'Render Node'}
+        { url: '#/render-node', label: 'Render Node'},
+        { url: '#/moveable', label: 'Moveable'}
       ];
 
     });

@@ -1,0 +1,9 @@
+<af-view af-view-type="Scrollview">
+  <af-surface ng-repeat="surf in surfs"
+              af-size="[undefined, 75]"
+              af-translate="[0, $index * 75, 0]"
+              af-properties="{background: surf.bgColor}">
+    {{surf.content}}
+    Index: {{$index}}
+  </af-surface>
+</af-view>
