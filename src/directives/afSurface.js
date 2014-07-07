@@ -22,34 +22,24 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
         },
         compile: function(element, attrs) {
           // TODO add other properties
-          var properties = [
-            {
-              attrs: ['afSizeX', 'afSizeY'],
-              getter: function(attrs) {
-                return [afUtils.parseAttr(attrs.afSizeX), afUtils.parseAttr(attrs.afSizeY)];
+          var properties = {
+            afSize: {
+              getter: function(scope, attrs) {
+                return scope.$eval(attrs.afSize);
               },
               setter: function(value) {
-                var curr = this.getSize();
-                if (curr == null || value[0] !== curr[0] || value[1] !== curr[1]) {
-                  this.setSize(value);
-                }
+                this.setSize(value);
               }
             },
-            {
-              attrs: ['afBackground'],
-              getter: function(attrs) {
-                return afUtils.removeEmptyProperties({
-                  background: afUtils.parseAttr(attrs.afBackground)
-                });
+            afProperties: {
+              getter: function(scope, attrs) {
+                return scope.$eval(attrs.afProperties);
               },
               setter: function(value) {
-                var curr = this.getProperties();
-                if (curr == null || value['background'] !== curr['background']) {
-                  this.setProperties(value);
-                }
+                this.setProperties(value);
               }
             }
-          ];
+          };
 
           // remember which attributes have been interpolated
           var interpolatedAttrs = afUtils.getInterpolatedAttrs(attrs);
@@ -59,8 +49,10 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             scope.afNode.surface.setContent(element[0]);
 
             // set properties
-            for (var i = 0, len = properties.length; i < len; i++) {
-              afUtils.setAndObserveProperty(scope.afNode.surface, attrs, interpolatedAttrs, properties[i]);
+            for (var propName in properties) {
+              if (properties.hasOwnProperty(propName)) {
+                afUtils.setAndObserveProperty(scope.afNode.surface, scope, attrs, interpolatedAttrs, propName, properties[propName]);
+              }
             }
 
             // set label

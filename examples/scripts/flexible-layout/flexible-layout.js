@@ -18,7 +18,7 @@ define([
       });
     })
 
-    .controller('FlexibleLayoutController', function($scope) {
+    .controller('FlexibleLayoutController', function() {
 
     });
 

@@ -37,56 +37,51 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
         compile: function(element, attrs) {
           // TODO add opacity, align, other transforms?
           // getters return functions that return the value
-          var properties = [
-            {
-              attrs: ['afOriginX', 'afOriginY'],
-              getter: function(attrs) {
+          var properties = {
+            afOrigin: {
+              getter: function(scope, attrs) {
                 return function() {
-                  return [afUtils.parseAttr(attrs.afOriginX), afUtils.parseAttr(attrs.afOriginY)];
+                  return scope.$eval(attrs.afOrigin);
                 };
               },
               setter: function(value) {
                 this.originFrom(value);
               }
             },
-            {
-              attrs: ['afSizeX', 'afSizeY'],
-              getter: function(attrs) {
+            afSize: {
+              getter: function(scope, attrs) {
                 return function() {
-                  return [afUtils.parseAttr(attrs.afSizeX), afUtils.parseAttr(attrs.afSizeY)];
+                  return scope.$eval(attrs.afSize);
                 };
               },
               setter: function(value) {
                 this.sizeFrom(value);
               }
             },
-            {
-              attrs: ['afTranslateX', 'afTranslateY', 'afTranslateZ'],
-              getter: function(attrs) {
+            afTranslate: {
+              getter: function(scope,attrs) {
                 return function() {
-                  return FamousCoreTransform.translate(
-                      afUtils.parseAttr(attrs.afTranslateX) || 0,
-                      afUtils.parseAttr(attrs.afTranslateY) || 0,
-                      afUtils.parseAttr(attrs.afTranslateZ) || 0
-                  );
+                  var xyz = scope.$eval(attrs.afTranslate);
+                  return FamousCoreTransform.translate(xyz[0], xyz[1], xyz[2]);
                 };
               },
               setter: function(value) {
                 this.transformFrom(value);
               }
             }
-          ];
+          };
 
           // remember which attributes have been interpolated
           var interpolatedAttrs = afUtils.getInterpolatedAttrs(attrs);
 
-          function setProperty(target, attrs, property) {
-            if (afUtils.hasSomeProperty(attrs, property.attrs)) {
-              var getter = property.getter(attrs);
-              if (!afUtils.hasSomeProperty(interpolatedAttrs, property.attrs)) {
-                getter = getter(); // pass a constant instead of a function
+          function setProperty(target, scope, attrs, propName, propValue) {
+            if(attrs.hasOwnProperty(propName)) {
+              var getter = propValue.getter(scope,attrs);
+              // if property is not interpolated, pass a constant instead of a function
+              if (!interpolatedAttrs.hasOwnProperty(propName)) {
+                getter = getter();
               }
-              property.setter.call(target, getter);
+              propValue.setter.call(target, getter);
             }
           }
 
@@ -98,8 +93,10 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             });
 
             // set properties
-            for (var i = 0, len = properties.length; i < len; i++) {
-              setProperty(scope.afNode.modifier, attrs, properties[i]);
+            for (var propName in properties) {
+              if (properties.hasOwnProperty(propName)) {
+                setProperty(scope.afNode.modifier, scope, attrs, propName, properties[propName]);
+              }
             }
 
             // set label

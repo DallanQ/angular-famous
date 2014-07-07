@@ -105,42 +105,26 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
         },
         compile: function(element, attrs) {
           var properties = {
-            FlexibleLayout: [
-              {
-                attrs: ['afDirection'],
-                getter: function(attrs) {
-                  return {
-                    direction: afUtils.parseAttr(attrs.afDirection)
-                  };
-                },
-                setter: function(value) {
-                  this.setOptions(value);
-                }
+            afOptions: {
+              getter: function(scope, attrs) {
+                return scope.$eval(attrs.afOptions);
               },
-              {
-                attrs: ['afRatios'],
-                getter: function(attrs) {
-                  return JSON.parse(afUtils.parseAttr(attrs.afRatios));
-                },
-                setter: function(value) {
-                  this.setRatios(value);
-                }
+              setter: function(value) {
+                this.setOptions(value);
               }
-            ],
-            HeaderFooterLayout: [
-              {
-                attrs: ['afHeaderSize', 'afFooterSize'],
-                getter: function(attrs) {
-                  return {
-                    headerSize: afUtils.parseAttr(attrs.afHeaderSize),
-                    footerSize: afUtils.parseAttr(attrs.afFooterSize)
-                  };
-                },
-                setter: function(value) {
-                  this.setOptions(value);
-                }
+            },
+            afRatios: {
+              getter: function(scope, attrs) {
+                return scope.$eval(attrs.afRatios);
+              },
+              setter: function(value) {
+                this.setRatios(value);
               }
-            ]
+            }
+          };
+          var viewProperties = {
+            FlexibleLayout: ['afOptions', 'afRatios'],
+            HeaderFooterLayout: ['afOptions']
           };
 
           // remember which attributes have been interpolated
@@ -154,9 +138,10 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             });
 
             // set properties
-            if (properties[attrs.afViewType]) {
-              for (var i = 0, len = properties[attrs.afViewType].length; i < len; i++) {
-                afUtils.setAndObserveProperty(scope.afNode.view, attrs, interpolatedAttrs, properties[attrs.afViewType][i]);
+            if (!!viewProperties[attrs.afViewType]) {
+              for (var i = 0, len = viewProperties[attrs.afViewType].length; i < len; i++) {
+                var propName = viewProperties[attrs.afViewType][i];
+                afUtils.setAndObserveProperty(scope.afNode.view, scope, attrs, interpolatedAttrs, propName, properties[propName]);
               }
             }
 

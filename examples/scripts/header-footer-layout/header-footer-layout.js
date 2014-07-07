@@ -18,7 +18,7 @@ define([
       });
     })
 
-    .controller('HeaderFooterLayoutController', function($scope) {
+    .controller('HeaderFooterLayoutController', function() {
 
     });
 
