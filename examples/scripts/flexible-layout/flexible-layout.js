@@ -9,7 +9,6 @@ define([
     'angularFamous',
     'ui.router'
   ])
-
     .config(function ($stateProvider) {
       $stateProvider.state('flexible-layout', {
         url: '/flexible-layout',
@@ -21,5 +20,4 @@ define([
     .controller('FlexibleLayoutController', function() {
 
     });
-
 });

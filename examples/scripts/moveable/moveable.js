@@ -9,7 +9,6 @@ define([
     'angularFamous',
     'ui.router'
   ])
-
     .config(function ($stateProvider) {
       $stateProvider.state('moveable', {
         url: '/moveable',
@@ -44,6 +43,6 @@ define([
           });
         }
       });
-    });
 
+    });
 });

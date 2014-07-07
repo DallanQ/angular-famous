@@ -9,7 +9,6 @@ define([
     'angularFamous',
     'ui.router'
   ])
-
     .config(function ($stateProvider) {
       $stateProvider.state('header-footer-layout', {
         url: '/header-footer-layout',
@@ -21,5 +20,4 @@ define([
     .controller('HeaderFooterLayoutController', function() {
 
     });
-
 });

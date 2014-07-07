@@ -9,7 +9,6 @@ define([
     'angularFamous',
     'ui.router'
   ])
-
     .config(function ($stateProvider) {
       $stateProvider.state('flipper', {
         url: '/flipper',
@@ -18,7 +17,7 @@ define([
       });
     })
 
-    .controller('FlipperController', function($scope, FamousCoreEventHandler) {
+    .controller('FlipperController', function($scope) {
       var flipper;
 
       $scope.$on('afAdded', function(event, child) {
