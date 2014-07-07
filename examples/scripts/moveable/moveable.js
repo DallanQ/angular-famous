@@ -5,7 +5,7 @@ define([
 ], function (angular) {
   'use strict';
 
-  return angular.module('angularFamousExample.moveable', [
+  return angular.module('angularFamousExamples.moveable', [
     'angularFamous',
     'ui.router'
   ])

@@ -3,6 +3,7 @@ define([
   'directives/afContext',
   'directives/afModifier',
   'directives/afSurface',
+  'directives/afView',
   'services/afUtils',
   'famousModule'
 ], function (angular) {
@@ -10,6 +11,7 @@ define([
     'angularFamous.afContext',
     'angularFamous.afModifier',
     'angularFamous.afSurface',
+    'angularFamous.afView',
     'angularFamous.afUtils',
     'famous'
   ]);

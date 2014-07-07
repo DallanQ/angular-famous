@@ -5,7 +5,7 @@ define([
 ], function (angular) {
   'use strict';
 
-  return angular.module('angularFamousExample.home', [
+  return angular.module('angularFamousExamples.home', [
     'angularFamous',
     'ui.router'
   ])
@@ -18,8 +18,10 @@ define([
     });
   })
 
-  .controller('HomeController', function($scope, $timeout, FamousCoreTransform) {
+  .controller('HomeController', function($scope, FamousCoreTransform) {
     $scope.menuItems = [
+      { url: '#/flipper', label: 'Flipper'},
+      { url: '#/flexible-layout', label: 'Flexible Layout'},
       { url: '#/moveable', label: 'Moveable'}
     ];
 

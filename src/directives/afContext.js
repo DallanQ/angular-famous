@@ -2,7 +2,7 @@ define(['angular', 'famousModule'], function(angular) {
   'use strict';
 
   return angular.module('angularFamous.afContext', ['famous'])
-    .directive('afContext', function($rootScope, FamousCoreEngine) {
+    .directive('afContext', function(FamousCoreEngine) {
       return {
         restrict: 'EA',
         priority: 1,

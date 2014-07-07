@@ -2,7 +2,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
   'use strict';
 
   return angular.module('angularFamous.afModifier', ['famous', 'angularFamous.afUtils'])
-    .directive('afModifier', function($timeout, FamousCoreModifier, FamousCoreRenderNode, FamousCoreTransform, afUtils) {
+    .directive('afModifier', function(FamousCoreModifier, FamousCoreRenderNode, FamousCoreTransform, afUtils) {
       return {
         restrict: 'EA',
         transclude: true,

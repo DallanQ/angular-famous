@@ -2,7 +2,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
   'use strict';
 
   return angular.module('angularFamous.afSurface', ['famous', 'angularFamous.afUtils'])
-    .directive('afSurface', function($timeout, FamousCoreSurface, FamousCoreRenderNode, afUtils) {
+    .directive('afSurface', function(FamousCoreSurface, FamousCoreRenderNode, afUtils) {
       return {
         restrict: 'EA',
         priority: 1,
@@ -58,29 +58,13 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
           // remember which attributes have been interpolated
           var interpolatedAttrs = afUtils.getInterpolatedAttrs(attrs);
 
-          function setProperty(target, attrs, property) {
-            if (afUtils.hasSomeProperty(attrs, property.attrs)) {
-              var getter = property.getter(attrs);
-              var updateFn = function() {
-                property.setter.call(target, getter());
-              };
-              updateFn();
-              // observe interpolated attrs
-              for (var i = 0, len = property.attrs.length; i < len; i++) {
-                if (interpolatedAttrs[property.attrs[i]]) {
-                  attrs.$observe(property.attrs[i], updateFn);
-                }
-              }
-            }
-          }
-
           return function(scope, element, attrs) {
             // set this element as the surface content
             scope.afNode.surface.setContent(element[0]);
 
             // set properties
             for (var i = 0, len = properties.length; i < len; i++) {
-              setProperty(scope.afNode.surface, attrs, properties[i]);
+              afUtils.setAndObserveProperty(scope.afNode.surface, attrs, interpolatedAttrs, properties[i]);
             }
 
             // set label
