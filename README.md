@@ -1,7 +1,10 @@
 An alternate approach to integrating Famo.us and AngularJS.
-This approach requires you to write a bit more code than [famous-angular](https://github.com/Famous/famous-angular), but the library is simpler.
+This approach requires you to write a bit more code than [famous-angular](https://github.com/Famous/famous-angular), 
+but the library is simpler.
+Each of the famous-angular examples ([except the two that don't appear to be working](https://github.com/thomasstreet/famous-angular-examples/issues/5))
+has been re-implemented here so you can compare the two approaches. 
 
-To test the examples
+## Running the examples
 
 * run `bower install`
 * start a webserver (e.g., `python -m SimpleHTTPServer 9000`)
