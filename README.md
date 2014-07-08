@@ -13,15 +13,16 @@ famous-angular is a great project. The following comparison is from my point of 
  
 ### Pro's
 * Straightforward, thin layer between famous and angular; easy to understand; easier to debug app code
-* Less bridge code; easy to keep up to date; less chance for bugs
+* Less code; easy to keep up to date; less chance for bugs
+* Tries to use standard angular practices
 * DOM ends up looking as it would if you wrote vanilla famous code; no extraneous divs
 * Code ends up looking more like vanilla famous code examples; only a few additional concepts to learn
 * Famous components are injectable for mocking during unit tests
 
 ### Con's
-* Can't wire components together declaratively in HTML _(wiring up event handlers happens procedurally as in vanilla famous;
-   declarative event handling could be added but it's not required because you can also do it procedurally)_
-* Famous-angular's fa-animation functionality is amazing; I have nothing like that _(it should be considered for famous core)_
+* Can't wire components together declaratively in HTML _(wiring up event handlers happens procedurally as in vanilla famous; 
+declarative event handling could be added but is not required)_
+* Famous-angular's fa-animation functionality is amazing; I have nothing like it _(it should be considered for famous core)_
 * I'm only implementing the functionality I need _(I'd be interested in adding more if others wanted to help)_
 
 ### Equal
