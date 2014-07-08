@@ -5,7 +5,7 @@ To test the examples
 
 * run `bower install`
 * start a webserver (e.g., `python -m SimpleHTTPServer 9000`)
-* point your browser to `examples/index.html`
+* point your browser to `http://localhost:9000/examples`
 
 ## Comparison with famous-angular
 
