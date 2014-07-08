@@ -1,0 +1,21 @@
+<!-- adapted from @continuata's code at https://github.com/Famous/famous-angular/issues/72  -->
+<af-modifier
+    ng-repeat="box in boxes"
+    af-size="[250, 50]"
+    af-translate="box.trans.get()">
+  <af-modifier>
+    <af-surface af-properties="{background: box.bgColor, color: box.color}" af-click="click(box)" af-size="[250,50]">
+      <table>
+        <tr>
+          <td>
+            <input style="width: 50px" ng-model="box.bgColor"/><br>
+            <input style="width: 50px" ng-model="box.color"/>
+          </td>
+          <td align="center">
+            {{text}} {{$index + 1}}
+          </td>
+        </tr>
+      </table>
+    </af-surface>
+  </af-modifier>
+</af-modifier>

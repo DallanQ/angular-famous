@@ -8,7 +8,8 @@ define([
   'examples/header-footer-layout/header-footer-layout',
   'examples/home/home',
   'examples/moveable/moveable',
-  'examples/render-node/render-node'
+  'examples/render-node/render-node',
+  'examples/transitionables/transitionables'
 ], function (angular) {
   'use strict';
 
@@ -22,7 +23,8 @@ define([
     'angularFamousExamples.header-footer-layout',
     'angularFamousExamples.home',
     'angularFamousExamples.moveable',
-    'angularFamousExamples.render-node'
+    'angularFamousExamples.render-node',
+    'angularFamousExamples.transitionables'
   ])
 
   .config(function($urlRouterProvider) {

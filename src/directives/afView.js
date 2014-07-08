@@ -123,7 +123,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             $scope.$parent.$emit('afRemove', $scope.afNode);
           });
         },
-        compile: function(element, attrs) {
+        link: function(scope, element, attrs, controller, transclude) {
           var properties = {
             afOptions: {
               getter: function(scope, attrs) {
@@ -147,35 +147,29 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             HeaderFooterLayout: ['afOptions']
           };
 
-          // remember which attributes have been interpolated
-          var interpolatedAttrs = afUtils.getInterpolatedAttrs(attrs);
+          // transclude children as children of the parent and remove this element
+          transclude(scope, function(clone) {
+            element.parent().append(clone);
+            element.remove();
+          });
 
-          return function(scope, element, attrs, controller, transclude) {
-            // transclude children as children of the parent and remove this element
-            transclude(scope, function(clone) {
-              element.parent().append(clone);
-              element.remove();
-            });
-
-            // set properties
-            if (!!viewProperties[attrs.afViewType]) {
-              for (var i = 0, len = viewProperties[attrs.afViewType].length; i < len; i++) {
-                var propName = viewProperties[attrs.afViewType][i];
-                afUtils.setAndObserveProperty(scope.afNode.view, scope, attrs, interpolatedAttrs, propName, properties[propName]);
-              }
+          // set properties
+          if (!!viewProperties[attrs.afViewType]) {
+            for (var i = 0, len = viewProperties[attrs.afViewType].length; i < len; i++) {
+              var propName = viewProperties[attrs.afViewType][i];
+              afUtils.watchProperty(scope.afNode.view, scope, attrs, propName, properties[propName]);
             }
+          }
 
-            // set label
-            scope.afNode.label = attrs.afView;
-            if (interpolatedAttrs['afView']) {
-              attrs.$observe('afView', function(value) {
-                scope.afNode.label = value;
-              });
-            }
+          // set label
+          scope.afNode.label = attrs.afView;
+          attrs.$observe('afView', function(value) {
+            scope.afNode.label = value;
+          });
 
-            // add to render tree after all normal-priority controller & link functions on this scope have executed
-            scope.$parent.$emit('afAdd', scope.afNode);
-          };
+          // add to render tree after all normal-priority controller & link functions on this scope have executed
+          scope.$parent.$emit('afAdd', scope.afNode);
+
         }
       };
     });

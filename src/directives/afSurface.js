@@ -20,7 +20,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             $scope.$parent.$emit('afRemove', $scope.afNode);
           });
         },
-        compile: function(element, attrs) {
+        link: function(scope, element, attrs) {
           // TODO add other properties
           var properties = {
             afSize: {
@@ -41,29 +41,25 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             }
           };
 
-          // remember which attributes have been interpolated
-          var interpolatedAttrs = afUtils.getInterpolatedAttrs(attrs);
+          // set this element as the surface content
+          scope.afNode.surface.setContent(element[0]);
 
-          return function(scope, element, attrs) {
-            // set this element as the surface content
-            scope.afNode.surface.setContent(element[0]);
-
-            // set properties
-            for (var propName in properties) {
-              if (properties.hasOwnProperty(propName)) {
-                afUtils.setAndObserveProperty(scope.afNode.surface, scope, attrs, interpolatedAttrs, propName, properties[propName]);
-              }
+          // set properties
+          for (var propName in properties) {
+            if (properties.hasOwnProperty(propName)) {
+              afUtils.watchProperty(scope.afNode.surface, scope, attrs, propName, properties[propName]);
             }
+          }
 
-            // set label
-            scope.afNode.label = attrs.afSurface;
-            attrs.$observe('afSurface', function(value) {
-              scope.afNode.label = value;
-            });
+          // set label
+          scope.afNode.label = attrs.afSurface;
+          attrs.$observe('afSurface', function(value) {
+            scope.afNode.label = value;
+          });
 
-            // add to render tree after all normal-priority controller & link functions on this scope have executed
-            scope.$parent.$emit('afAdd', scope.afNode);
-          };
+          // add to render tree after all normal-priority controller & link functions on this scope have executed
+          scope.$parent.$emit('afAdd', scope.afNode);
+
         }
       };
     });

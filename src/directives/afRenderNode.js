@@ -43,28 +43,22 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             $scope.$parent.$emit('afRemove', $scope.afNode);
           });
         },
-        compile: function(element, attrs) {
-          // remember which attributes have been interpolated
-          var interpolatedAttrs = afUtils.getInterpolatedAttrs(attrs);
+        link: function(scope, element, attrs, controller, transclude) {
+          // transclude children as children of the parent and remove this element
+          transclude(scope, function(clone) {
+            element.parent().append(clone);
+            element.remove();
+          });
 
-          return function(scope, element, attrs, controller, transclude) {
-            // transclude children as children of the parent and remove this element
-            transclude(scope, function(clone) {
-              element.parent().append(clone);
-              element.remove();
-            });
+          // set label
+          scope.afNode.label = attrs.afRenderNode;
+          attrs.$observe('afRenderNode', function(value) {
+            scope.afNode.label = value;
+          });
 
-            // set label
-            scope.afNode.label = attrs.afRenderNode;
-            if (interpolatedAttrs['afRenderNode']) {
-              attrs.$observe('afRenderNode', function(value) {
-                scope.afNode.label = value;
-              });
-            }
+          // add to render tree after all normal-priority controller & link functions on this scope have executed
+          scope.$parent.$emit('afAdd', scope.afNode);
 
-            // add to render tree after all normal-priority controller & link functions on this scope have executed
-            scope.$parent.$emit('afAdd', scope.afNode);
-          };
         }
       };
     });

@@ -24,6 +24,7 @@ define([
         { url: '#/flipper', label: 'Flipper'},
         { url: '#/header-footer-layout', label: 'Header Footer Layout'},
         { url: '#/render-node', label: 'Render Node'},
+        { url: '#/transitionables', label: 'Transitionables'},
         { url: '#/moveable', label: 'Moveable'}
       ];
 

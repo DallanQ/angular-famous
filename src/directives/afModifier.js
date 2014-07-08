@@ -1,8 +1,8 @@
 define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
   'use strict';
 
-  return angular.module('angularFamous.afModifier', ['famous', 'angularFamous.afUtils'])
-    .directive('afModifier', function(FamousCoreModifier, FamousCoreRenderNode, FamousCoreTransform, afUtils) {
+  return angular.module('angularFamous.afModifier', ['famous'])
+    .directive('afModifier', function(FamousCoreModifier, FamousCoreRenderNode, FamousCoreTransform) {
       return {
         restrict: 'EA',
         transclude: true,
@@ -34,7 +34,7 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             $scope.$parent.$emit('afRemove', $scope.afNode);
           });
         },
-        compile: function(element, attrs) {
+        link: function(scope, element, attrs, controller, transclude) {
           // TODO add opacity, align, other transforms?
           // getters return functions that return the value
           var properties = {
@@ -71,45 +71,35 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
             }
           };
 
-          // remember which attributes have been interpolated
-          var interpolatedAttrs = afUtils.getInterpolatedAttrs(attrs);
-
           function setProperty(target, scope, attrs, propName, propValue) {
             if(attrs.hasOwnProperty(propName)) {
               var getter = propValue.getter(scope,attrs);
-              // if property is not interpolated, pass a constant instead of a function
-              if (!interpolatedAttrs.hasOwnProperty(propName)) {
-                getter = getter();
-              }
               propValue.setter.call(target, getter);
             }
           }
 
-          return function(scope, element, attrs, controller, transclude) {
-            // transclude children as children of the parent and remove this element
-            transclude(scope, function(clone) {
-              element.parent().append(clone);
-              element.remove();
-            });
+          // transclude children as children of the parent and remove this element
+          transclude(scope, function(clone) {
+            element.parent().append(clone);
+            element.remove();
+          });
 
-            // set properties
-            for (var propName in properties) {
-              if (properties.hasOwnProperty(propName)) {
-                setProperty(scope.afNode.modifier, scope, attrs, propName, properties[propName]);
-              }
+          // set properties
+          for (var propName in properties) {
+            if (properties.hasOwnProperty(propName)) {
+              setProperty(scope.afNode.modifier, scope, attrs, propName, properties[propName]);
             }
+          }
 
-            // set label
-            scope.afNode.label = attrs.afModifier;
-            if (interpolatedAttrs['afModifier']) {
-              attrs.$observe('afModifier', function(value) {
-                scope.afNode.label = value;
-              });
-            }
+          // set label
+          scope.afNode.label = attrs.afModifier;
+          attrs.$observe('afModifier', function(value) {
+            scope.afNode.label = value;
+          });
 
-            // add to render tree after all normal-priority controller & link functions on this scope have executed
-            scope.$parent.$emit('afAdd', scope.afNode);
-          };
+          // add to render tree after all normal-priority controller & link functions on this scope have executed
+          scope.$parent.$emit('afAdd', scope.afNode);
+
         }
       };
     });
