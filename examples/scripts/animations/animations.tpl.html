@@ -1,0 +1,98 @@
+<af-surface af-size="[undefined, undefined]" class="background-dark"></af-surface>
+
+<div af-modifier="wholeThing" af-size="[sizes.width, sizes.height]" af-origin="[.5, .5]" af-align="[.5, .5]">
+
+  <div af-modifier="testTransform">
+    <af-surface class="center-square" af-size="[2 * sizes.triangle + .5, 2 * sizes.triangle + .5]" ></af-surface>
+  </div>
+
+  <af-modifier
+      af-size="[2 * sizes.triangle, sizes.triangle]"
+      af-translate="positions.topTriangle" >
+    <div af-modifier="topMod" af-origin="[.5, 1]"  >
+      <af-surface>
+        <div class="top-triangle light"></div>
+      </af-surface>
+    </div>
+  </af-modifier>
+  <af-modifier
+      af-size="[2 * sizes.triangle, sizes.triangle]"
+      af-translate="positions.topTriangleInner" >
+    <div af-modifier="topModInner" af-origin="[.5, 0]"  >
+      <af-surface>
+        <div class="bottom-triangle"></div>
+      </af-surface>
+    </div>
+  </af-modifier>
+
+  <af-modifier
+      af-size="[sizes.triangle, 2 * sizes.triangle]"
+      af-translate="positions.rightTriangle" >
+    <div af-modifier="rightMod" af-origin="[0, .5]"  >
+      <af-surface>
+        <div class="right-triangle light"></div>
+      </af-surface>
+    </div>
+  </af-modifier>
+  <af-modifier
+      af-size="[sizes.triangle, 2 * sizes.triangle]"
+      af-translate="positions.rightTriangleInner" >
+    <div af-modifier="rightModInner" af-origin="[1, .5]"  >
+      <af-surface>
+        <div class="left-triangle"></div>
+      </af-surface>
+    </div>
+  </af-modifier>
+
+  <af-modifier
+      af-size="[2 * sizes.triangle, sizes.triangle]"
+      af-translate="positions.bottomTriangle" >
+    <div af-modifier="bottomMod" af-origin="[.5, 0]"  >
+      <af-surface>
+        <div class="bottom-triangle light"></div>
+      </af-surface>
+    </div>
+  </af-modifier>
+  <af-modifier
+      af-size="[2 * sizes.triangle, sizes.triangle]"
+      af-translate="positions.bottomTriangleInner" >
+    <div af-modifier="bottomModInner" af-origin="[.5, 1]"  >
+      <af-surface>
+        <div class="top-triangle"></div>
+      </af-surface>
+    </div>
+  </af-modifier>
+
+  <af-modifier
+      af-size="[sizes.triangle, 2 * sizes.triangle]"
+      af-translate="positions.leftTriangle" >
+    <div af-modifier="leftMod" af-origin="[1, .5]"  >
+      <af-surface>
+        <div class="left-triangle light"></div>
+      </af-surface>
+    </div>
+  </af-modifier>
+  <af-modifier
+      af-size="[sizes.triangle, 2 * sizes.triangle]"
+      af-translate="positions.leftTriangleInner" >
+    <div af-modifier="leftModInner" af-origin="[0, .5]"  >
+      <af-surface>
+        <div class="right-triangle"></div>
+      </af-surface>
+    </div>
+  </af-modifier>
+
+  <div af-modifier="translateRotate"
+      af-size="[2.828 * sizes.triangle, 2.828 * sizes.triangle]">
+    <div af-modifier="contentMod">
+      <af-surface class="center-content">
+        {{getContent()}}
+        <br>
+        <br>
+        <input ng-model="twoWayTest" />
+        <br>
+        {{twoWayTest}}
+      </af-surface>
+    </div>
+  </div>
+</div>

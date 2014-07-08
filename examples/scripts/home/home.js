@@ -19,6 +19,7 @@ define([
 
     .controller('HomeController', function($scope) {
       $scope.menuItems = [
+        { url: '#/animations', label: 'Animations'},
         { url: '#/demo', label: 'Demo'},
         { url: '#/flexible-layout', label: 'Flexible Layout'},
         { url: '#/flipper', label: 'Flipper'},

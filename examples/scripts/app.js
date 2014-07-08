@@ -2,6 +2,7 @@ define([
   'angular',
   'angularFamous',
   'ui.router',
+  'examples/animations/animations',
   'examples/demo/demo',
   'examples/flipper/flipper',
   'examples/flexible-layout/flexible-layout',
@@ -18,6 +19,7 @@ define([
   return angular.module('angularFamousExamples', [
     'angularFamous',
     'ui.router',
+    'angularFamousExamples.animations',
     'angularFamousExamples.demo',
     'angularFamousExamples.flipper',
     'angularFamousExamples.flexible-layout',

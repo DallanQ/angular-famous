@@ -35,9 +35,19 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
           });
         },
         link: function(scope, element, attrs, controller, transclude) {
-          // TODO add opacity, align, other transforms?
+          // TODO add opacity, other transforms?
           // getters return functions that return the value
           var properties = {
+            afAlign: {
+              getter: function(scope, attrs) {
+                return function() {
+                  return scope.$eval(attrs.afAlign);
+                };
+              },
+              setter: function(value) {
+                this.alignFrom(value);
+              }
+            },
             afOrigin: {
               getter: function(scope, attrs) {
                 return function() {
