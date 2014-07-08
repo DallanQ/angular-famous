@@ -7,8 +7,8 @@ define(['angular'], function(angular) {
         if (attrs.hasOwnProperty(propName)) {
           scope.$watch(function() {
             return propValue.getter(scope, attrs);
-          }, function(newValue) {
-            propValue.setter.call(target, newValue);
+          }, function(newValue, oldValue) {
+            propValue.setter.call(target, newValue, oldValue);
           }, true);
         }
       }

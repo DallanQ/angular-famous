@@ -23,6 +23,7 @@ define([
         { url: '#/flexible-layout', label: 'Flexible Layout'},
         { url: '#/flipper', label: 'Flipper'},
         { url: '#/header-footer-layout', label: 'Header Footer Layout'},
+        { url: '#/ng-class', label: 'ng-Class'},
         { url: '#/render-node', label: 'Render Node'},
         { url: '#/transitionables', label: 'Transitionables'},
         { url: '#/moveable', label: 'Moveable'}

@@ -8,6 +8,7 @@ define([
   'examples/header-footer-layout/header-footer-layout',
   'examples/home/home',
   'examples/moveable/moveable',
+  'examples/ng-class/ng-class',
   'examples/render-node/render-node',
   'examples/transitionables/transitionables'
 ], function (angular) {
@@ -23,6 +24,7 @@ define([
     'angularFamousExamples.header-footer-layout',
     'angularFamousExamples.home',
     'angularFamousExamples.moveable',
+    'angularFamousExamples.ng-class',
     'angularFamousExamples.render-node',
     'angularFamousExamples.transitionables'
   ])

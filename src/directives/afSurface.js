@@ -38,11 +38,35 @@ define(['angular', 'famousModule', 'services/afUtils'], function(angular) {
               setter: function(value) {
                 this.setProperties(value);
               }
+            },
+            afClass: {
+              getter: function(scope, attrs) {
+                return scope.$eval(attrs.afClass);
+              },
+              setter: function(value) {
+                for (var className in value) {
+                  if (value.hasOwnProperty(className)) {
+                    if (value[className]) {
+                      this.addClass(className);
+                    }
+                    else {
+                      this.removeClass(className);
+                    }
+                  }
+                }
+              }
             }
           };
 
           // set this element as the surface content
           scope.afNode.surface.setContent(element[0]);
+
+          // move classes onto surface
+          if (!!attrs['class']) {
+            var classes = attrs['class'].split(' ');
+            scope.afNode.surface.setClasses(classes);
+            element.removeClass(attrs['class']);
+          }
 
           // set properties
           for (var propName in properties) {
